@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
 import ProductList from '../components/ProductList.jsx'
 
-export default function HomePage({usuarioLogado = false,userData = null, loadingUserContent = null}) {
+export default function HomePage({isUserLogged = false,userData = null, loadingUserContent = null}) {
 
-    if(!userData && usuarioLogado) return loadingUserContent
+    if(!userData && isUserLogged) return loadingUserContent
 
     return (
         <div className=" flex flex-col items-center p-8 mt-16">
@@ -18,7 +18,7 @@ export default function HomePage({usuarioLogado = false,userData = null, loading
                     Melhor site da internet
                 </p>
                 
-                {!usuarioLogado?
+                {!isUserLogged?
                     <div className="mt-8 flex justify-center space-x-4">
                         
                         <Link to="/cadastro" className="px-8 py-3 text-lg font-semibold text-white bg-green-600 rounded-lg hover:bg-green-700 transition duration-300 shadow-xl transform hover:scale-105">
@@ -31,7 +31,7 @@ export default function HomePage({usuarioLogado = false,userData = null, loading
                     </div>: null
                 }
             </div>
-            {usuarioLogado? 
+            {isUserLogged? 
             <div className="w-full mt-16" data-aos="fade-down" data-aos-duration="1200">
                 <ProductList/>
             </div>: null

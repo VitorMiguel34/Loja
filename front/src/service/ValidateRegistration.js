@@ -47,7 +47,7 @@ export default class ValidateRegistration{
 
     static async all(user){
 
-        if(!this.name(user.nome)){
+        if(!this.name(user.name)){
             return false
         }
 
@@ -55,7 +55,7 @@ export default class ValidateRegistration{
             return false
         }
 
-        else if(!this.age(user.idada)){
+        else if(!this.age(user.age)){
             return false
         }
         

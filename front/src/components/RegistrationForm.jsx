@@ -1,16 +1,16 @@
 import {useState} from 'react'
 import { useNavigate } from 'react-router-dom'
 import {postUser} from '../service/service.js'
-import RegistrationValidate from '../service/validarCadastro.js'
+import RegistrationValidate from '../service/ValidateRegistration.js'
 import '../styles/form.css'
-
-const CREDITOS_INICIAIS = 300
 
 export default function RegistrationForm(){
 
     const navigate = useNavigate()
 
-    const [userData, setUserData] = useState({nome: '', email: '', idade: '', senha: '', creditos: CREDITOS_INICIAIS})
+    const INITIAL_BALANCE= 300
+
+    const [userData, setUserData] = useState({name: '', email: '', age: '', password: '', balance: INITIAL_BALANCE})
     const [error, setError] = useState(false)
     const [loading, setLoading] = useState(false)
 
@@ -21,7 +21,7 @@ export default function RegistrationForm(){
 
         setUserData({
             ...userData,
-            idade: parseInt(userData.idade)
+            age: parseInt(userData.age)
         })
 
         try{
@@ -29,7 +29,7 @@ export default function RegistrationForm(){
 
             if(validRegistration){
                 await postUser(userData)
-                setUserData({nome: '', email: '', idade: '', senha: '', creditos: '0'})
+                setUserData({name: '', email: '', age: '', password: '', balance: INITIAL_BALANCE})
                 navigate('/login')
             }
         }
@@ -46,7 +46,7 @@ export default function RegistrationForm(){
     function handleChange(e){
         setUserData({
             ...userData,
-            [e.target.name]: e.target.name === "nome" ? e.target.value : e.target.value.trim()
+            [e.target.name]: e.target.name === "name" ? e.target.value : e.target.value.trim()
         })
     }
     const errorContent = (
@@ -86,10 +86,10 @@ export default function RegistrationForm(){
                 <h1 className="text-3xl text-[var(--cor-do-titulo)]">Cadastro</h1>
                 <input 
                     onChange={handleChange} 
-                    value={userData.nome} 
+                    value={userData.name} 
                     className="rounded-md m-4 px-4 w-11/12 py-2 focus:outline-none"
                     type="text" 
-                    name="nome" 
+                    name="name" 
                     placeholder='Nome' 
                     autoComplete='off' 
                     required
@@ -108,10 +108,10 @@ export default function RegistrationForm(){
                 
                 <input 
                     onChange={handleChange} 
-                    value={userData.idade} 
+                    value={userData.age} 
                     className="rounded-md m-4 px-4 w-11/12 py-2 focus:outline-none"
                     type="number" 
-                    name="idade" 
+                    name="age" 
                     placeholder='Idade' 
                     autoComplete='off' 
                     required
@@ -119,10 +119,10 @@ export default function RegistrationForm(){
 
                 <input 
                     onChange={handleChange} 
-                    value={userData.senha} 
+                    value={userData.password} 
                     className="rounded-md m-4 px-4 w-11/12 py-2 focus:outline-none"
                     type="password" 
-                    name="senha" 
+                    name="password" 
                     placeholder='Senha' 
                     autoComplete='off' 
                     required

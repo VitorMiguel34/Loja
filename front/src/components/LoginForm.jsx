@@ -3,10 +3,10 @@ import {useNavigate} from 'react-router-dom'
 import {fetchUsers} from '../service/service.js'
 import '../styles/form.css'
 
-export default function LoginForm({logar, setUserData}){
+export default function LoginForm({login, setUserData}){
     const navigate = useNavigate()
 
-    const [userInfos, setUserInfos] = useState({email: '', senha: ''})
+    const [userInfos, setUserInfos] = useState({email: '', password: ''})
     const [error, setError] = useState(false)
     const [sucess, setSucess] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
@@ -17,21 +17,21 @@ export default function LoginForm({logar, setUserData}){
         setSucess(false)
         try{
             const users = await fetchUsers()
-            const user = users.find(u => u.email === userInfos.email && u.senha === userInfos.senha)
+            const user = users.find(u => u.email === userInfos.email && u.password === userInfos.password)
             
             if(user){
                 localStorage.setItem("userId", user.id)
                 setSucess(true)
-                localStorage.setItem("usuarioLogado", true)
+                localStorage.setItem("isUserLogged", true)
                 setUserData(user)
-                logar()
+                login()
                 navigate("/usuario/")
             }
             else{
                 setError(true)
                 setErrorMessage("Credenciais invalidas!")
             }
-            setUserInfos({email: '', senha: ''})
+            setUserInfos({email: '', password: ''})
         }
         catch (erro){
             setError(true)
@@ -91,10 +91,10 @@ export default function LoginForm({logar, setUserData}){
 
                 <input 
                     onChange={handleChange} 
-                    value={userInfos.senha} 
+                    value={userInfos.password} 
                     className="rounded-md m-4 px-4 w-11/12 py-2 focus:outline-none"
                     type="password" 
-                    name="senha" 
+                    name="password" 
                     placeholder='Senha' 
                     autoComplete='off' 
                     required

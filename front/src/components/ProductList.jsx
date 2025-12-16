@@ -124,7 +124,7 @@ const getSuccessContent = (onClose) => (
 export default function ProductList() {
 
     const [products,setProducts] = useState([]);
-    const [productsInCart, setProductsInCart] = useState(JSON.parse(localStorage.getItem("carrinho")) || {})
+    const [productsInCart, setProductsInCart] = useState(JSON.parse(localStorage.getItem("cart")) || {})
 
     const [isLoading, setIsLoading] = useState(true);
     const [isAddLoading, setIsAddLoading] = useState(false)
@@ -137,7 +137,7 @@ export default function ProductList() {
 
 
     useEffect(() => {
-        localStorage.setItem("carrinho", JSON.stringify(productsInCart))
+        localStorage.setItem("cart", JSON.stringify(productsInCart))
     }, [productsInCart])
 
     const loadProducts = async () => {
@@ -177,16 +177,16 @@ export default function ProductList() {
 
             if(productsInCart[productId]){
                 const updateProduct= {
-                    "produto": { ...product, quantidade: product.quantidade - 1 }, 
-                    "quantidadeNoCarrinho": productsInCart[productId]["quantidadeNoCarrinho"] + 1
+                    product: { ...product, quantity: product.quantity - 1 }, 
+                    numInCart: productsInCart[productId].numInCart + 1
                 }
                 newCart = {...productsInCart}
                 newCart[productId] = updateProduct
             }
             else{
                 const updateProduct = {
-                    "produto": { ...product, quantidade:  product.quantidade - 1}, 
-                    "quantidadeNoCarrinho": 1
+                    product: { ...product, quantity:  product.quantity - 1}, 
+                    numInCart: 1
                 }
                 newCart  = {...productsInCart}
                 newCart[productId] = updateProduct
@@ -194,15 +194,15 @@ export default function ProductList() {
             
             setProductsInCart(newCart)
             
-            setProducts(prevProdutos =>
-                prevProdutos.map(p =>
+            setProducts(prevProducts =>
+                prevProducts.map(p =>
                     p.id === product.id 
-                        ? { ...p, quantidade: p.quantidade - 1 } 
+                        ? { ...p, quantity: p.quantity - 1 } 
                         : p
                 )
             );
 
-            await setProductQuantity(product.id, product.quantidade - 1)
+            await setProductQuantity(product.id, product.quantity - 1)
 
         }
         catch (erro){
@@ -241,10 +241,8 @@ export default function ProductList() {
 
             </div>
 
-            {/* Renderiza o overlay de loading enquanto estiver carregando */}
             {isAddLoading && addLoadingContet} 
 
-            {/* Renderiza a mensagem de sucesso, que pode ser fechada */}
             {showSuccessMessage && 
                 getSuccessContent(() => setShowSuccessMessage(false))
             }

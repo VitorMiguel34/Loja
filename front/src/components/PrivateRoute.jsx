@@ -1,7 +1,7 @@
-import { Navigate, Outlet, redirect } from 'react-router-dom';
+import { Navigate, Outlet} from 'react-router-dom';
 
 export default function PrivateRoute({ redirectPage = '/' }){
-  const loggedInUser = localStorage.getItem("usuarioLogado") === "true"
+  const loggedInUser = localStorage.getItem("isUserLogged") === "true"
 
   if (!loggedInUser) {
     return <Navigate to={redirectPage} replace />;

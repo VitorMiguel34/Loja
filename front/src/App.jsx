@@ -2,10 +2,10 @@ import { BrowserRouter, Routes, Route} from 'react-router-dom';
 import {useEffect, useState} from 'react'
 import AOS from 'aos'
 import PrivateRout from './components/PrivateRoute.jsx';
-import CadastroPage from './pages/Cadastro.jsx';
+import RegistrationPage from './pages/Registration.jsx';
 import LoginPage from './pages/Login.jsx'
 import HomePage from './pages/Home.jsx'
-import CarrinhoPage from './pages/Cart.jsx'
+import CartPage from './pages/Cart.jsx'
 import UserPage from './pages/User.jsx'
 import Header from './components/Header.jsx'
 import {fetchUnicUser} from './service/service.js'
@@ -57,13 +57,13 @@ const loadingUserContent = (
 export default function App() {
 
     const initialUserId = parseInt(localStorage.getItem("userId")) || null;
-    const [usuarioLogado, setUsuarioLogado] = useState(false); 
+    const [isUserLogged, setIsUserLogged] = useState(false); 
     const [userData, setUserData] = useState(null)
 
     useEffect(() => {
         const fetchUser = async () => {
-            const loggedIn = localStorage.getItem("usuarioLogado") === "true";
-            setUsuarioLogado(loggedIn);
+            const loggedIn = localStorage.getItem("isUserLogged") === "true";
+            setIsUserLogged(loggedIn);
 
             if (loggedIn && initialUserId) {
                 const initialUserData = await fetchUnicUser(initialUserId);
@@ -79,20 +79,20 @@ export default function App() {
 
     return (
         <BrowserRouter>
-            <Header loggedInUser={usuarioLogado}/>
+            <Header loggedInUser={isUserLogged}/>
             <main>
                 <Routes>
 
                     <Route path="/" element={<HomePage/>}/>
 
-                    <Route path="/cadastro" element={<CadastroPage/>} />
+                    <Route path="/cadastro" element={<RegistrationPage/>} />
 
-                    <Route path="/login" element={<LoginPage setUserData={setUserData} logar={() => {setUsuarioLogado(true)}}/>} />
+                    <Route path="/login" element={<LoginPage setUserData={setUserData} login={() => {setIsUserLogged(true)}}/>} />
 
                     <Route path="/usuario" element={<PrivateRout/>}>
-                        <Route path="/usuario/" element={<HomePage usuarioLogado={true} userData={userData} loadingUserContent={loadingUserContent}/>}/>
-                        <Route path="/usuario/perfil" element={<UserPage userData={userData} loadingUserContent={loadingUserContent} setUserData={setUserData} setUsuarioLogado={setUsuarioLogado}/>}/>
-                        <Route path="/usuario/carrinho" element={<CarrinhoPage userData={userData} loadingUserContent={loadingUserContent} setUserData={setUserData}/>}/>
+                        <Route path="/usuario/" element={<HomePage isUserLogged={true} userData={userData} loadingUserContent={loadingUserContent}/>}/>
+                        <Route path="/usuario/perfil" element={<UserPage userData={userData} loadingUserContent={loadingUserContent} setUserData={setUserData} setIsUserLogged={setIsUserLogged}/>}/>
+                        <Route path="/usuario/carrinho" element={<CartPage userData={userData} loadingUserContent={loadingUserContent} setUserData={setUserData}/>}/>
                     </Route>
 
                 </Routes>

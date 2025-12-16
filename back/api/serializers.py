@@ -1,13 +1,13 @@
 from rest_framework import serializers
-from .models import Usuario, Produto
+from .models import User, Product
 
-class UsuarioSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Usuario
-        fields = ['nome','email','idade','senha','creditos','id']
+        model = User
+        fields = ['name','email','age','password','balance','id']
 
 
-class ProdutoSerializer(serializers.ModelSerializer):
+class ProductSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Produto
-        fields = ["nome","imagem","preco","quantidade", "id"]
+        model = Product
+        fields = ["name","image","price","quantity", "id"]

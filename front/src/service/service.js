@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-const USERS_API_URL  = 'http://localhost:8000/api/usuarios/'
-const PRODUCTS_API_URL= 'http://localhost:8000/api/produtos/'
+const USERS_API_URL  = 'http://localhost:8000/api/users/'
+const PRODUCTS_API_URL= 'http://localhost:8000/api/products/'
 
 export const fetchUsers = async () => {
     try{
@@ -46,7 +46,7 @@ export const fetchProducts = async () => {
 
 export const setProductQuantity = async (productId, newQuantity) => {
     try{
-        await axios.patch(`${PRODUCTS_API_URL}${productId}/`, {quantidade: newQuantity})
+        await axios.patch(`${PRODUCTS_API_URL}${productId}/`, {quantity: newQuantity})
     }   
     catch(error){
         throw error
@@ -54,9 +54,9 @@ export const setProductQuantity = async (productId, newQuantity) => {
 
 }
 
-export const setUserCredits = async (userId, newCreditsQuantity) => {
+export const setUserBalance = async (userId, newBalance) => {
     try{
-        await axios.patch(`${USERS_API_URL}${userId}/`, {creditos: newCreditsQuantity} )
+        await axios.patch(`${USERS_API_URL}${userId}/`, {balance: newBalance} )
     }
     catch (error){
         throw error

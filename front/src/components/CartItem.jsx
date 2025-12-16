@@ -1,7 +1,8 @@
-export default function CartItem({ purchase, purchaseCount, removeOfCart, desabilitar}) {
+export default function CartItem({ purchase, purchaseCount, removeOfCart, disable}) {
 
-    const purchaseName = purchase.produto.nome
-    const purchasePrice = purchase.produto.preco
+    const purchaseName = purchase.product.name
+    const purchasePrice = purchase.product.price
+    console.log(purchaseCount)
 
     return (
         <div className="flex items-center justify-between py-3 px-4 bg-white border-b border-gray-100 last:border-b-0 transition-colors hover:bg-gray-50">
@@ -16,7 +17,7 @@ export default function CartItem({ purchase, purchaseCount, removeOfCart, desabi
             </div>
 
             <button 
-                disabled={desabilitar}
+                disabled={disable}
                 onClick={removeOfCart} 
                 type="button"
                 className="px-3 py-1 text-sm font-medium text-white bg-red-500 hover:bg-red-600 rounded-lg transition duration-300 transform hover:scale-105"

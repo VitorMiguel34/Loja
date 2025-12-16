@@ -1,12 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 
 
-export default function User({setUsuarioLogado, userData, setUserData, loadingUserContent}){
+export default function User({setIsUserLogged, userData, setUserData, loadingUserContent}){
   const navigate = useNavigate()
 
   function exitSession(){
       localStorage.clear()
-      setUsuarioLogado(false)
+      setIsUserLogged(false)
       setUserData(null)
       navigate('/') 
   }
@@ -22,9 +22,9 @@ export default function User({setUsuarioLogado, userData, setUserData, loadingUs
        
         <div className="space-y-3 flex-col justify-center items-center">
           
-          <p className="text-gray-700"><strong className="font-semibold text-gray-900">Nome:</strong> {userData.nome}</p>
+          <p className="text-gray-700"><strong className="font-semibold text-gray-900">Nome:</strong> {userData.name}</p>
           <p className="text-gray-700"><strong className="font-semibold text-gray-900">E-mail:</strong> {userData.email}</p>
-          <p className="text-gray-700"><strong className="font-semibold text-gray-900">Creditos:</strong> {userData.creditos}</p>
+          <p className="text-gray-700"><strong className="font-semibold text-gray-900">Saldo::</strong> {userData.balance}</p>
 
 
           <button onClick={exitSession} type="button" className="text-white w-[470px] py-2 font-semibold rounded-lg bg-red-500 hover:bg-red-600 hover:scale-105 transition duration-300">

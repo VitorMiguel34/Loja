@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react'
 import CartItem from "../components/CartItem.jsx"
-import {fetchUnicUser, setProductQuantity, setUserCredits} from '../service/service.js'
+import {setProductQuantity, setUserBalance} from '../service/service.js'
 
 const removeLoadingContent = (
     <div 
@@ -83,7 +83,7 @@ const emptyCardContent = (
 
 export default function Cart({userData, setUserData, loadingUserContent}) {
 
-    const [productsInCart, setProductsInCart] = useState(JSON.parse(localStorage.getItem("carrinho")) || {})
+    const [productsInCart, setProductsInCart] = useState(JSON.parse(localStorage.getItem("cart")) || {})
     const [totalPrice, setTotalPrice] = useState(0)
     const [numOfItems, setNumOfItems] = useState(0)
 
@@ -100,7 +100,7 @@ export default function Cart({userData, setUserData, loadingUserContent}) {
         setIsTimeDelayed(false); 
         setShowRemoveSuccess(false); 
         
-        let erroOcorreu = false;
+        let errorHappened = false;
 
         const timerPromise = new Promise(resolve => {
             setTimeout(() => {
@@ -110,36 +110,36 @@ export default function Cart({userData, setUserData, loadingUserContent}) {
         });
 
         try{
-            const originalProduct = purchase.produto;
-            const productId  = originalProduct.id.toString();
+            const originalProduct = purchase.product;
+            const productId = originalProduct.id.toString();
 
             const updateProduct = {
-                "produto": {...originalProduct, "quantidade": originalProduct.quantidade + 1},
-                "quantidadeNoCarrinho": purchase["quantidadeNoCarrinho"] - 1
+                product: {...originalProduct, quantity: originalProduct.quantity + 1},
+                numInCart: purchase.numInCart - 1
             }
 
             let newCart = {...productsInCart}
             newCart[productId] = updateProduct
 
-            await setProductQuantity(productId, updateProduct["produto"]["quantidade"])
+            await setProductQuantity(productId, updateProduct.product.quantity)
 
-            if(updateProduct["quantidadeNoCarrinho"] === 0){
+            if(updateProduct.numInCart === 0){
                 delete newCart[productId]
             }
 
             setProductsInCart(newCart)
-            localStorage.setItem("carrinho",JSON.stringify(newCart)) 
+            localStorage.setItem("cart",JSON.stringify(newCart)) 
         }
         catch(erro){
             setRemoveError(true)
-            erroOcorreu = true;
+            errorHappened = true;
             console.error(erro)
         }
         finally{
             await timerPromise; 
             setIsRemoveLoading(false);
             
-            if (!erroOcorreu) {
+            if (!errorHappened) {
                 setShowRemoveSuccess(true);
             }
         }
@@ -147,15 +147,15 @@ export default function Cart({userData, setUserData, loadingUserContent}) {
 
     async function finishPurchase(){
         try{
-            const userCredits = userData["creditos"]
-            if(userCredits < totalPrice){
+            const userBalance = userData.balance
+            if(userBalance < totalPrice){
                 alert("Voce nao tem creditos suficientes pra concluir a compra, adicione mais creditos ou remova produtos do carrinho")
             }
             else{
-                setUserCredits(userData.id, userCredits - totalPrice)
-                setUserData({...userData, "credtios": userCredits - totalPrice})
+                setUserBalance(userData.id, userBalance - totalPrice)
+                setUserData({...userData, balance: userBalance - totalPrice})
                 setProductsInCart({})
-                localStorage.setItem("carrinho", JSON.stringify([]))
+                localStorage.setItem("cart", JSON.stringify([]))
                 alert("Compra concluida!")
             }
         }
@@ -168,17 +168,18 @@ export default function Cart({userData, setUserData, loadingUserContent}) {
     useEffect(() => {
         let price = 0
         let num = 0
-        productIds.map(id => {
-            price += productsInCart[id]["produto"]["preco"] * productsInCart[id]["quantidadeNoCarrinho"];
-            num += productsInCart[id]["quantidadeNoCarrinho"]}
+        productIds.map(pId => {
+            price += productsInCart[pId].product.price * productsInCart[pId].numInCart;
+            num += productsInCart[pId].numInCart}
         )
         setTotalPrice(price.toFixed(2))
         setNumOfItems(num)
 
     }, [productsInCart])
 
-    
     const productIds = Object.keys(productsInCart) 
+    console.log(productsInCart)
+    console.log(productIds)
 
     if(!userData) return loadingUserContent
     if(removeError) alert("Erro ao remover produto do carrinho!")
@@ -192,12 +193,12 @@ export default function Cart({userData, setUserData, loadingUserContent}) {
                 </h1>
 
                 <div className="bg-white rounded-lg overflow-hidden">
-                    {productIds.map(id => (
+                    {productIds.map(pId => (
                         <CartItem
-                            key={id} 
-                            purchaseCount ={productsInCart[id]["quantidadeNoCarrinho"]} 
-                            purchase ={productsInCart[id]} 
-                            removerOfCart ={() => removeOfCart(productsInCart[id])} 
+                            key={pId} 
+                            purchaseCount ={productsInCart[pId].numInCart} 
+                            purchase ={productsInCart[pId]} 
+                            removerOfCart ={() => removeOfCart(productsInCart[pId])} 
                             desabilitar={isRemoveLoading}
                         /> 
                     ))}
@@ -234,7 +235,7 @@ export default function Cart({userData, setUserData, loadingUserContent}) {
                 {productIds.map(id => (
                     <CartItem
                         key={id} 
-                        purchaseCount ={productsInCart[id]["quantidadeNoCarrinho"]} 
+                        purchaseCount ={productsInCart[id].numInCart} 
                         purchase={productsInCart[id]} 
                         removeOfCart={() => removeOfCart(productsInCart[id])} 
                         desabilitar={isRemoveLoading}

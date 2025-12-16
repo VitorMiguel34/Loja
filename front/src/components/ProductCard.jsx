@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 
-export default function ProductCard({ product, addToCart, desabilitar }) {
+export default function ProductCard({ product, addToCart, disable }) {
 
-    const imageUrl = product.imagem;
-    const [productCount, setProductCount] = useState(product.quantidade)
+    const imageUrl = product.image;
+    const [productCount, setProductCount] = useState(product.quantity)
 
     useEffect(() => {
-        setProductCount(product.quantidade);
-    }, [product.quantidade]);
+        setProductCount(product.quantity);
+    }, [product.quantity]);
 
     const isAvailable = productCount > 0;
-    const isDisabled = desabilitar || !isAvailable;
+    const isDisabled = disable || !isAvailable;
 
     return (
         <div className="max-w-xs mx-auto rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 bg-white transform hover:scale-[1.02] my-8">
@@ -19,20 +19,20 @@ export default function ProductCard({ product, addToCart, desabilitar }) {
                 <img
                     className="h-full w-full object-cover transition-transform duration-300"
                     src={imageUrl}
-                    alt={`Imagem de ${product.nome}`}
+                    alt={`Imagem de ${product.name}`}
                 />
             </div>
 
             <div className="p-5">
                 <h3 className="text-xl font-extrabold text-gray-900 mb-2 truncate">
-                    {product.nome}
+                    {product.name}
                 </h3>
 
                 <div className="flex justify-between items-center mb-4 border-t pt-3 border-gray-100">
                     <div className="text-left">
                         <span className="text-sm font-medium text-gray-500 block">Preço:</span>
                         <h4 className="text-2xl font-bold text-indigo-600">
-                            R${product.preco.toFixed(2)}
+                            R${product.price.toFixed(2)}
                         </h4>
                     </div>
 
@@ -67,7 +67,7 @@ export default function ProductCard({ product, addToCart, desabilitar }) {
                         }
                     }}
                 >
-                    {isDisabled && desabilitar ? 'Aguarde...' : 'Adicionar ao Carrinho'}
+                    {isDisabled && disable ? 'Aguarde...' : 'Adicionar ao Carrinho'}
                 </button>
             </div>
         </div>

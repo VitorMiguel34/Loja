@@ -1,15 +1,15 @@
 from django.shortcuts import render
 from rest_framework import viewsets
-from .models import Usuario, Produto
-from .serializers import UsuarioSerializer, ProdutoSerializer
+from .models import User, Product
+from .serializers import UserSerializer, ProductSerializer
 
-class UsuarioViewSet(viewsets.ModelViewSet):
+class UserViewSet(viewsets.ModelViewSet):
 
-    queryset = Usuario.objects.all()
-    serializer_class = UsuarioSerializer
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
 
-class ProdutoViewSet(viewsets.ModelViewSet):
+class ProductViewSet(viewsets.ModelViewSet):
 
-    queryset = Produto.objects.all()
-    serializer_class = ProdutoSerializer
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
