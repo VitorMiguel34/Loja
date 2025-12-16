@@ -1,0 +1,9 @@
+:root{
+    --cor-da-navbar: #046a7d;
+    --cor-do-texto: rgb(255,255,255);
+    --cor-do-botao: #14ca4b;
+    --cor-do-botao-hover: #18b80c;
+}
+body{
+    font-family: 'Playfair display'
+}
