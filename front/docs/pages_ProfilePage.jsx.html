@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>pages/ProfilePage.jsx - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="Components_CartItem.html">Components:CartItem</a></li><li><a href="Components_Header.html">Components:Header</a></li><li><a href="Components_LoginForm.html">Components:LoginForm</a></li><li><a href="Components_PrivateRoute.html">Components:PrivateRoute</a></li><li><a href="Components_ProductCard.html">Components:ProductCard</a></li><li><a href="Components_ProductList.html">Components:ProductList</a><ul class='methods'><li data-type='method'><a href="Components_ProductList.html#~loadProducts">loadProducts</a></li></ul></li><li><a href="Components_RegistrationForm.html">Components:RegistrationForm</a></li><li><a href="Pages_HomePage.html">Pages:HomePage</a></li><li><a href="Pages_LoginPage.html">Pages:LoginPage</a></li><li><a href="Pages_ProfilePage.html">Pages:ProfilePage</a></li><li><a href="Pages_RegistrationPage.html">Pages:RegistrationPage</a></li><li><a href="module-ValidateRegistration.html">ValidateRegistration</a><ul class='methods'><li data-type='method'><a href="module-ValidateRegistration.html#.age">age</a></li><li data-type='method'><a href="module-ValidateRegistration.html#.all">all</a></li><li data-type='method'><a href="module-ValidateRegistration.html#.email">email</a></li><li data-type='method'><a href="module-ValidateRegistration.html#.name">name</a></li></ul></li><li><a href="module-services.html">services</a><ul class='methods'><li data-type='method'><a href="module-services.html#~fetchProducts">fetchProducts</a></li><li data-type='method'><a href="module-services.html#~fetchUnicUser">fetchUnicUser</a></li><li data-type='method'><a href="module-services.html#~fetchUsers">fetchUsers</a></li><li data-type='method'><a href="module-services.html#~postUser">postUser</a></li><li data-type='method'><a href="module-services.html#~setProductQuantity">setProductQuantity</a></li><li data-type='method'><a href="module-services.html#~setUserBalance">setUserBalance</a></li></ul></li></ul><h3><a href="global.html">Global</a></h3>
+    
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">pages/ProfilePage.jsx</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { useNavigate } from 'react-router-dom';
+
+/** The content of the user's profile page
+ * @module Pages:ProfilePage
+ * @component
+ * @param {function} setIsUserLoggedIn - A function that modifies the state of isUserLoggedIn
+ * @param {object} userData - The user's data(if user is logged in)
+ * @param {function} setUserData - A function that modifies the userData
+ * @param {JSX.Element} loadingUserContent - The contet to be shownd while loading user
+ */
+export default function ProfilePage({setIsUserLoggedIn, userData, setUserData, loadingUserContent}){
+  const navigate = useNavigate()
+
+  function exitSession(){
+      localStorage.clear()
+      setIsUserLoggedIn(false)
+      setUserData(null)
+      navigate('/') 
+  }
+
+  if(!userData) return loadingUserContent
+
+  return (
+    &lt;div className="mx-auto my-8 max-w-lg rounded-xl bg-white p-6 shadow-2xl border border-gray-100">
+      
+      &lt;h2 className="text-2xl font-bold text-gray-800 text-center pb-4 mb-4 border-b-2 border-indigo-500">
+        Perfil do Usuário
+      &lt;/h2>
+       
+        &lt;div className="space-y-3 flex-col justify-center items-center">
+          
+          &lt;p className="text-gray-700">&lt;strong className="font-semibold text-gray-900">Nome:&lt;/strong> {userData.name}&lt;/p>
+          &lt;p className="text-gray-700">&lt;strong className="font-semibold text-gray-900">E-mail:&lt;/strong> {userData.email}&lt;/p>
+          &lt;p className="text-gray-700">&lt;strong className="font-semibold text-gray-900">Saldo: R$&lt;/strong> {userData.balance}&lt;/p>
+
+
+          &lt;button onClick={exitSession} type="button" className="text-white w-[470px] py-2 font-semibold rounded-lg bg-red-500 hover:bg-red-600 hover:scale-105 transition duration-300">
+              Sair
+          &lt;/button>
+        &lt;/div>
+      
+    &lt;/div>
+  );
+};
+
+
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a> on Wed Dec 17 2025 17:51:47 GMT-0300 (Brasilia Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

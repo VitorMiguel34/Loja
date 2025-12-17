@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>components/ProductList.jsx - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="Components_CartItem.html">Components:CartItem</a></li><li><a href="Components_Header.html">Components:Header</a></li><li><a href="Components_LoginForm.html">Components:LoginForm</a></li><li><a href="Components_PrivateRoute.html">Components:PrivateRoute</a></li><li><a href="Components_ProductCard.html">Components:ProductCard</a></li><li><a href="Components_ProductList.html">Components:ProductList</a><ul class='methods'><li data-type='method'><a href="Components_ProductList.html#~loadProducts">loadProducts</a></li></ul></li><li><a href="Components_RegistrationForm.html">Components:RegistrationForm</a></li><li><a href="Pages_HomePage.html">Pages:HomePage</a></li><li><a href="Pages_LoginPage.html">Pages:LoginPage</a></li><li><a href="Pages_ProfilePage.html">Pages:ProfilePage</a></li><li><a href="Pages_RegistrationPage.html">Pages:RegistrationPage</a></li><li><a href="module-ValidateRegistration.html">ValidateRegistration</a><ul class='methods'><li data-type='method'><a href="module-ValidateRegistration.html#.age">age</a></li><li data-type='method'><a href="module-ValidateRegistration.html#.all">all</a></li><li data-type='method'><a href="module-ValidateRegistration.html#.email">email</a></li><li data-type='method'><a href="module-ValidateRegistration.html#.name">name</a></li></ul></li><li><a href="module-services.html">services</a><ul class='methods'><li data-type='method'><a href="module-services.html#~fetchProducts">fetchProducts</a></li><li data-type='method'><a href="module-services.html#~fetchUnicUser">fetchUnicUser</a></li><li data-type='method'><a href="module-services.html#~fetchUsers">fetchUsers</a></li><li data-type='method'><a href="module-services.html#~postUser">postUser</a></li><li data-type='method'><a href="module-services.html#~setProductQuantity">setProductQuantity</a></li><li data-type='method'><a href="module-services.html#~setUserBalance">setUserBalance</a></li></ul></li></ul><h3><a href="global.html">Global</a></h3>
+    
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">components/ProductList.jsx</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { useState, useEffect } from 'react';
+import ProductCard from './ProductCard.jsx'; 
+import { fetchProducts, setProductQuantity,} from '../service/service.js'; 
+import '../styles/productList.css'
+
+const loadingContent = (
+    &lt;div className="flex justify-center items-center p-8 bg-indigo-50 rounded-lg shadow-md max-w-sm mx-auto my-8">
+        &lt;div className="flex items-center space-x-3">
+            &lt;svg className="animate-spin h-6 w-6 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                &lt;circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4">&lt;/circle>
+                &lt;path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">&lt;/path>
+            &lt;/svg>
+            
+            &lt;p className="text-lg font-semibold text-indigo-800">
+                Carregando dados...
+            &lt;/p>
+        &lt;/div>
+    &lt;/div>
+)
+
+const errorContent = (
+    &lt;div className="flex justify-center my-8">
+        &lt;div className="p-6 bg-red-100 border-l-4 border-red-500 text-red-700 rounded-lg shadow-lg max-w-md w-full" role="alert">
+            
+            &lt;div className="flex items-start">
+                
+                &lt;svg className="h-6 w-6 text-red-500 mr-3 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    &lt;path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd">&lt;/path>
+                &lt;/svg>
+
+                &lt;div>
+                    &lt;h3 className="text-xl font-bold text-red-800 mb-1">
+                        Ops! Ocorreu um erro.
+                    &lt;/h3>
+                    &lt;p className="text-base">
+                        Nao foi possivel carregar o conteudo. Motivo: Falha na conexao com o servidor
+                    &lt;/p>
+                &lt;/div>
+                
+            &lt;/div>
+        &lt;/div>
+    &lt;/div>
+)
+
+const emptyListContent = (
+    &lt;div className="mt-8 p-8 text-center bg-green-600 border text-white rounded-lg mx-auto max-w-lg mt-10">
+        &lt;h2 className="text-2xl font-bold mb-3">Nenhum Produto Encontrado&lt;/h2>
+        &lt;p>O catalogo esta vazio, infelizmente nao temos produtos disponiveis&lt;/p>
+    &lt;/div>
+)
+
+const addLoadingContet = (
+    &lt;div 
+        className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-70 backdrop-blur-sm"
+        role="status"
+        aria-live="polite"
+    >
+        &lt;div className="bg-white p-8 rounded-xl shadow-2xl max-w-sm w-full transform transition duration-300 scale-100">
+            
+            &lt;div className="flex items-center space-x-4">
+                
+                &lt;svg 
+                    className="animate-spin h-8 w-8 text-indigo-600" 
+                    xmlns="http://www.w3.org/2000/svg" 
+                    fill="none" 
+                    viewBox="0 0 24 24"
+                >
+                    &lt;circle 
+                        className="opacity-25" 
+                        cx="12" cy="12" r="10" 
+                        stroke="currentColor" 
+                        strokeWidth="4"
+                    >&lt;/circle>
+                    &lt;path 
+                        className="opacity-75" 
+                        fill="currentColor" 
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 004 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    >&lt;/path>
+                &lt;/svg>
+
+                &lt;div>
+                    &lt;h2 className="text-xl font-bold text-gray-800">
+                        Adicionando ao Carrinho...
+                    &lt;/h2>
+                    &lt;p className="text-sm text-gray-500">
+                        Aguarde a confirmação.
+                    &lt;/p>
+                &lt;/div>
+            &lt;/div>
+        &lt;/div>
+    &lt;/div>
+)
+
+const getSuccessContent = (onClose) => (
+    &lt;div 
+        className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-70 backdrop-blur-sm"
+        role="dialog"
+        aria-modal="true"
+    >
+        &lt;div className="bg-white p-8 rounded-xl shadow-2xl max-w-sm w-full">
+            &lt;div className="flex flex-col items-center">
+                
+                &lt;svg className="h-10 w-10 text-green-500 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    &lt;path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                &lt;/svg>
+                &lt;h2 className="text-2xl font-bold text-gray-800 mb-2">
+                    Produto Adicionado!
+                &lt;/h2>
+                &lt;p className="text-base text-gray-600 mb-4 text-center">
+                    Seu item foi adicionado ao carrinho com sucesso.
+                &lt;/p>
+                
+                &lt;button 
+                    onClick={onClose}
+                    className="mt-4 w-full px-4 py-2 text-sm font-semibold text-white bg-green-600 rounded-lg hover:bg-green-700 transition duration-150"
+                >
+                    Fechar
+                &lt;/button>
+            &lt;/div>
+        &lt;/div>
+    &lt;/div>
+);
+
+/**
+ * The list of products in the store
+ * @module Components:ProductList
+ * @component
+ * @returns {JSX.element}
+ */
+export default function ProductList() {
+
+    const [products,setProducts] = useState([]);
+    const [productsInCart, setProductsInCart] = useState(JSON.parse(localStorage.getItem("cart")) || {})
+
+    const [isLoading, setIsLoading] = useState(true);
+    const [isAddLoading, setIsAddLoading] = useState(false)
+
+    const [error, setError] = useState(null);
+    const [addError, setAddError] = useState(null)
+
+    const [isTimeDelayed, setIsTimeDelayed] = useState(false); 
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false); 
+
+
+    useEffect(() => {
+        localStorage.setItem("cart", JSON.stringify(productsInCart))
+    }, [productsInCart])
+    
+    /**
+     * Load all the products via GET request to API
+     * @function loadProducts
+     * @async
+     * @throws {Error} if the connection with the API fail
+     */
+    const loadProducts = async () => {
+        setIsLoading(true)
+        try {
+            const productsData = await fetchProducts(); 
+            setProducts(productsData);
+        } catch (err) {
+            setError("Não foi possível carregar os produtos. Verifique a conexão com o servidor.");
+            console.error(err)
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
+    useEffect(() => {
+        loadProducts();
+    }, [])
+
+    /**
+     * Add a new item to car via PUT request for API
+     * @inner
+     * @param {object} product - Object with the product's informations
+     * @throws {Error} - if the connection with API fails
+     */
+    async function addToCart(product){
+        setIsAddLoading(true)
+        setAddError(false)
+        setShowSuccessMessage(false); 
+        setIsTimeDelayed(false); 
+
+        const productId = product.id.toString();
+
+        const timerPromise = new Promise(resolve => {
+            setTimeout(() => {
+                setIsTimeDelayed(true);
+                resolve();
+            }, 500); 
+        });
+
+        try{
+            let newCart;
+
+            if(productsInCart[productId]){
+                const updateProduct= {
+                    product: { ...product, quantity: product.quantity - 1 }, 
+                    numInCart: productsInCart[productId].numInCart + 1
+                }
+                newCart = {...productsInCart}
+                newCart[productId] = updateProduct
+            }
+            else{
+                const updateProduct = {
+                    product: { ...product, quantity:  product.quantity - 1}, 
+                    numInCart: 1
+                }
+                newCart  = {...productsInCart}
+                newCart[productId] = updateProduct
+            }
+            
+            setProductsInCart(newCart)
+            
+            setProducts(prevProducts =>
+                prevProducts.map(p =>
+                    p.id === product.id 
+                        ? { ...p, quantity: p.quantity - 1 } 
+                        : p
+                )
+            );
+
+            await setProductQuantity(product.id, product.quantity - 1)
+
+        }
+        catch (erro){
+            setAddError(true)
+            console.error(erro)
+        }
+        finally{
+            await timerPromise; 
+            setIsAddLoading(false);
+            
+            if (!addError) {
+                setShowSuccessMessage(true);
+            }
+        }
+    }
+
+    if(isLoading) return loadingContent
+    if(error) return  errorContent
+    if(products.length === 0) return emptyListContent
+
+    return (
+        &lt;div className="rounded-xl mt-8 w-full p-4 sm:p-6 lg:p-8 bg-[var(--cor-do-fundo)]">
+            &lt;h1 className="text-green-500 text-4xl font-extrabold text-gray-900 mb-10 text-center pb-4">
+                Catalogo de Produtos
+            &lt;/h1>
+
+            &lt;div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-10 justify-items-center">
+                
+                {products.map((product) => (
+                    &lt;ProductCard
+                        key={product.id} 
+                        product={product} 
+                        desabilitar={isAddLoading} 
+                        addToCart={() => addToCart(product)}/>
+                ))}
+
+            &lt;/div>
+
+            {isAddLoading? addLoadingContet:null} 
+
+            {showSuccessMessage? getSuccessContent(() => setShowSuccessMessage(false)): null}
+
+        &lt;/div>
+    );
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a> on Wed Dec 17 2025 17:51:47 GMT-0300 (Brasilia Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

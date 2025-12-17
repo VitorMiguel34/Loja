@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>components/ProductCard.jsx - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="Components_CartItem.html">Components:CartItem</a></li><li><a href="Components_Header.html">Components:Header</a></li><li><a href="Components_LoginForm.html">Components:LoginForm</a></li><li><a href="Components_PrivateRoute.html">Components:PrivateRoute</a></li><li><a href="Components_ProductCard.html">Components:ProductCard</a></li><li><a href="Components_ProductList.html">Components:ProductList</a><ul class='methods'><li data-type='method'><a href="Components_ProductList.html#~loadProducts">loadProducts</a></li></ul></li><li><a href="Components_RegistrationForm.html">Components:RegistrationForm</a></li><li><a href="Pages_HomePage.html">Pages:HomePage</a></li><li><a href="Pages_LoginPage.html">Pages:LoginPage</a></li><li><a href="Pages_ProfilePage.html">Pages:ProfilePage</a></li><li><a href="Pages_RegistrationPage.html">Pages:RegistrationPage</a></li><li><a href="module-ValidateRegistration.html">ValidateRegistration</a><ul class='methods'><li data-type='method'><a href="module-ValidateRegistration.html#.age">age</a></li><li data-type='method'><a href="module-ValidateRegistration.html#.all">all</a></li><li data-type='method'><a href="module-ValidateRegistration.html#.email">email</a></li><li data-type='method'><a href="module-ValidateRegistration.html#.name">name</a></li></ul></li><li><a href="module-services.html">services</a><ul class='methods'><li data-type='method'><a href="module-services.html#~fetchProducts">fetchProducts</a></li><li data-type='method'><a href="module-services.html#~fetchUnicUser">fetchUnicUser</a></li><li data-type='method'><a href="module-services.html#~fetchUsers">fetchUsers</a></li><li data-type='method'><a href="module-services.html#~postUser">postUser</a></li><li data-type='method'><a href="module-services.html#~setProductQuantity">setProductQuantity</a></li><li data-type='method'><a href="module-services.html#~setUserBalance">setUserBalance</a></li></ul></li></ul><h3><a href="global.html">Global</a></h3>
+    
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">components/ProductCard.jsx</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { useEffect, useState } from "react";
+
+/**
+ * The product cart that is in the product list
+ * @module Components:ProductCard
+ * @component
+ * @param {Object} product - Consulte for more informatons  
+ * @param {function} addToCart - Add an item to cart
+ * @param {boolean} disable - If true, disable the addToCart button
+ * @returns {JSX.Element}
+ */
+export default function ProductCard({ product, addToCart, disable }) {
+
+    const imageUrl = product.image;
+    const [productCount, setProductCount] = useState(product.quantity)
+
+    useEffect(() => {
+        setProductCount(product.quantity);
+    }, [product.quantity]);
+
+    const isAvailable = productCount > 0;
+    const isDisabled = disable || !isAvailable;
+
+    return (
+        &lt;div className="max-w-xs mx-auto rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 bg-white transform hover:scale-[1.02] my-8">
+
+            &lt;div className="h-64 w-full overflow-hidden">
+                &lt;img
+                    className="h-full w-full object-cover transition-transform duration-300"
+                    src={imageUrl}
+                    alt={`Imagem de ${product.name}`}
+                />
+            &lt;/div>
+
+            &lt;div className="p-5">
+                &lt;h3 className="text-xl font-extrabold text-gray-900 mb-2 truncate">
+                    {product.name}
+                &lt;/h3>
+
+                &lt;div className="flex justify-between items-center mb-4 border-t pt-3 border-gray-100">
+                    &lt;div className="text-left">
+                        &lt;span className="text-sm font-medium text-gray-500 block">Preço:&lt;/span>
+                        &lt;h4 className="text-2xl font-bold text-indigo-600">
+                            R${product.price.toFixed(2)}
+                        &lt;/h4>
+                    &lt;/div>
+
+                    &lt;div className="text-right">
+                        &lt;span className="text-sm font-medium text-gray-500 block">Unidades:&lt;/span>
+                        {isAvailable ? (
+                            &lt;h5 className="text-xl font-bold text-green-600">
+                                {productCount}
+                            &lt;/h5>
+                        ) : (
+                            &lt;h5 className="inline-block px-3 py-1 text-xs font-semibold uppercase tracking-wider bg-red-100 text-red-700 rounded-full">
+                                Indisponível!
+                            &lt;/h5>
+                        )}
+                    &lt;/div>
+                &lt;/div>
+
+                &lt;button
+                    disabled={isDisabled}
+                    className={`w-full text-white font-semibold py-3 px-4 rounded-lg shadow-md transition-all duration-200 hover:scale-105
+                        ${isDisabled
+                            ? 'bg-gray-400 cursor-not-allowed'
+                            : 'bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-300 focus:ring-opacity-75'
+                        }`}
+                    onClick={() => {
+                        if (isAvailable) {
+                            addToCart();
+                            setProductCount(prevCount => prevCount - 1);
+                        }
+                        else {
+                            alert("Não temos mais unidades desse produto disponíveis!");
+                        }
+                    }}
+                >
+                    {isDisabled &amp;&amp; disable ? 'Aguarde...' : 'Adicionar ao Carrinho'}
+                &lt;/button>
+            &lt;/div>
+        &lt;/div>
+    );
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a> on Wed Dec 17 2025 17:51:47 GMT-0300 (Brasilia Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>
