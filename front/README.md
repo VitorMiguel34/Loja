@@ -1,16 +1,78 @@
-# React + Vite
+# 🛍️ Loja virtual
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este é um projeto de e-commerce completo (Loja Virtual) desenvolvido como treino para consolidar conhecimentos em **React** (Frontend) e **Django REST Framework** (Backend).
 
-Currently, two official plugins are available:
+## 🚀 Tecnologias Utilizadas
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+| Categoria | Tecnologia | Descrição |
+| :--- | :--- | :--- |
+| **Frontend** | React, JavaScript | Interface do usuário e lógica de apresentação. |
+| **Estilização** | TalwindCSS / Styled-Components | Estilizaçāo completa |
+| **Rotas** | React Router DOM | Gerenciamento de navegação entre as páginas. |
+| **Backend** | Django REST Framework (DRF) | Criação da API RESTful para servir os dados. |
+| **Linguagem** | Python 3 | Lógica de negócio e manipulação de dados no servidor. |
+| **Banco de Dados** | SQLite3 | Persistência dos dados de produtos, usuários e pedidos. |
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🌟 Principais Funcionalidades
 
-## Expanding the ESLint configuration
+* **Autenticação(ainda incompleta):** Cadastro e Login de usuários.
+* **Catálogo de Produtos:** Visualização de todos os produtos com detalhes.
+* **Carrinho de Compras:** Adicionar, remover e atualizar a quantidade de itens.
+* **Checkout Simplificado:** Simulação do processo de finalização de compra e criação de pedidos.
+* **Área do Usuário:** Visualizaçāo das informações do usuário
+* **Sistema de Rotas Privadas** (Proteção de rotas como "usuario").
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## ⚙️ Configuração e Instalação
+
+Siga os passos abaixo para configurar e rodar o projeto na sua máquina local.
+
+### 1. Pré-requisitos
+
+Certifique-se de ter instalado:
+
+* Node.js e npm (ou yarn)
+* Python 3
+* Pip (gerenciador de pacotes do Python)
+
+### 2. Configurando o Backend (API Django REST)
+
+Entre na pasta do backend ("back").
+
+```bash
+# 1. Crie e ative um ambiente virtual
+python -m venv venv
+source venv/bin/activate  # No Linux/macOS
+# ou
+.\venv\Scripts\activate   # No Windows
+
+# 2. Instale as dependências
+pip install -r requirements.txt 
+
+# 3. Realize as migrações do banco de dados
+python manage.py makemigrations
+python manage.py migrate
+
+# 4. Inicie o servidor
+python manage.py runserver
+```
+
+### 3. Rodando o servidor react
+
+```bash
+# 1. Navegue até "front/loja"
+cd front/loja
+
+# 2. Instale as dependências do Node
+npm install
+# ou 
+yarn install
+
+# 2. Inicie a aplicação React
+npm run dev
+#
+yarn start
+```

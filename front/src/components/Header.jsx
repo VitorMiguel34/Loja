@@ -7,7 +7,13 @@ import {
     ArrowRightOnRectangleIcon 
 } from '@heroicons/react/24/solid'  
 
-export default function Header({loggedInUser}){
+/**
+ * The page's header
+ * @module Components:Header
+ * @component
+ * @param {boolean} isUserLoggedIn - Indicates if user is logged in
+ */
+export default function Header({isUserLoggedIn}){
 
     const iconStyle = "w-5 h-5 mr-1"
 
@@ -16,14 +22,14 @@ export default function Header({loggedInUser}){
             <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center text-[var(--cor-do-texto)]">
                 <div className="flex items-center">
 
-                   <Link to={loggedInUser? "/usuario/": "/"} className="text-2xl font-extrabold transition duration-300 hover:scale-105 hover:text-green-500 flex items-center">
+                   <Link to={isUserLoggedIn? "/usuario/": "/"} className="text-2xl font-extrabold transition duration-300 hover:scale-105 hover:text-green-500 flex items-center">
                             <HomeIcon className="w-6 h-6 mr-2" />
                             Home
                     </Link>
                 </div>
 
                 <div className="flex space-x-6">
-                    {loggedInUser?<>
+                    {isUserLoggedIn?<>
                     <Link 
                         to="/usuario/carrinho" 
                         className="text-white px-3 py-2 text-sm font-semibold rounded-lg bg-[var(--cor-do-botao)] hover:bg-[var(--cor-do-botao-hover)] transition duration-300 shadow-md hover:scale-105 flex items-center" 

@@ -2,11 +2,11 @@ import { BrowserRouter, Routes, Route} from 'react-router-dom';
 import {useEffect, useState} from 'react'
 import AOS from 'aos'
 import PrivateRout from './components/PrivateRoute.jsx';
-import RegistrationPage from './pages/Registration.jsx';
-import LoginPage from './pages/Login.jsx'
-import HomePage from './pages/Home.jsx'
-import CartPage from './pages/Cart.jsx'
-import UserPage from './pages/User.jsx'
+import RegistrationPage from './pages/RegistrationPage.jsx';
+import LoginPage from './pages/LoginPage.jsx'
+import HomePage from './pages/HomePage.jsx'
+import CartPage from './pages/CartPage.jsx'
+import ProfilePage from './pages/ProfilePage.jsx'
 import Header from './components/Header.jsx'
 import {fetchUnicUser} from './service/service.js'
 import './App.css'
@@ -57,13 +57,13 @@ const loadingUserContent = (
 export default function App() {
 
     const initialUserId = parseInt(localStorage.getItem("userId")) || null;
-    const [isUserLogged, setIsUserLogged] = useState(false); 
+    const [isUserLoggedIn, setIsUserLoggedIn] = useState(localStorage.getItem("isUserLoggedIn") === "true"); 
     const [userData, setUserData] = useState(null)
 
     useEffect(() => {
         const fetchUser = async () => {
-            const loggedIn = localStorage.getItem("isUserLogged") === "true";
-            setIsUserLogged(loggedIn);
+            const loggedIn = localStorage.getItem("isUserLoggedIn") === "true";
+            setIsUserLoggedIn(loggedIn);
 
             if (loggedIn && initialUserId) {
                 const initialUserData = await fetchUnicUser(initialUserId);
@@ -79,7 +79,7 @@ export default function App() {
 
     return (
         <BrowserRouter>
-            <Header loggedInUser={isUserLogged}/>
+            <Header isUserLoggedIn={isUserLoggedIn}/>
             <main>
                 <Routes>
 
@@ -87,11 +87,11 @@ export default function App() {
 
                     <Route path="/cadastro" element={<RegistrationPage/>} />
 
-                    <Route path="/login" element={<LoginPage setUserData={setUserData} login={() => {setIsUserLogged(true)}}/>} />
+                    <Route path="/login" element={<LoginPage setUserData={setUserData} setIsUserLoggedIn={setIsUserLoggedIn}/>} />
 
-                    <Route path="/usuario" element={<PrivateRout/>}>
-                        <Route path="/usuario/" element={<HomePage isUserLogged={true} userData={userData} loadingUserContent={loadingUserContent}/>}/>
-                        <Route path="/usuario/perfil" element={<UserPage userData={userData} loadingUserContent={loadingUserContent} setUserData={setUserData} setIsUserLogged={setIsUserLogged}/>}/>
+                    <Route path="/usuario" element={<PrivateRout isUserLoggedIn={isUserLoggedIn}/>}>
+                        <Route path="/usuario/" element={<HomePage isUserLoggedIn={isUserLoggedIn} userData={userData} loadingUserContent={loadingUserContent}/>}/>
+                        <Route path="/usuario/perfil" element={<ProfilePage userData={userData} loadingUserContent={loadingUserContent} setUserData={setUserData} setIsUserLoggedIn={setIsUserLoggedIn}/>}/>
                         <Route path="/usuario/carrinho" element={<CartPage userData={userData} loadingUserContent={loadingUserContent} setUserData={setUserData}/>}/>
                     </Route>
 

@@ -121,6 +121,12 @@ const getSuccessContent = (onClose) => (
     </div>
 );
 
+/**
+ * The list of products in the store
+ * @module Components:ProductList
+ * @component
+ * @returns {JSX.element}
+ */
 export default function ProductList() {
 
     const [products,setProducts] = useState([]);
@@ -139,7 +145,13 @@ export default function ProductList() {
     useEffect(() => {
         localStorage.setItem("cart", JSON.stringify(productsInCart))
     }, [productsInCart])
-
+    
+    /**
+     * Load all the products via GET request to API
+     * @function loadProducts
+     * @async
+     * @throws {Error} if the connection with the API fail
+     */
     const loadProducts = async () => {
         setIsLoading(true)
         try {
@@ -157,6 +169,12 @@ export default function ProductList() {
         loadProducts();
     }, [])
 
+    /**
+     * Add a new item to car via PUT request for API
+     * @inner
+     * @param {object} product - Object with the product's informations
+     * @throws {Error} - if the connection with API fails
+     */
     async function addToCart(product){
         setIsAddLoading(true)
         setAddError(false)
@@ -241,11 +259,9 @@ export default function ProductList() {
 
             </div>
 
-            {isAddLoading && addLoadingContet} 
+            {isAddLoading? addLoadingContet:null} 
 
-            {showSuccessMessage && 
-                getSuccessContent(() => setShowSuccessMessage(false))
-            }
+            {showSuccessMessage? getSuccessContent(() => setShowSuccessMessage(false)): null}
 
         </div>
     );

@@ -4,6 +4,11 @@ import {postUser} from '../service/service.js'
 import RegistrationValidate from '../service/ValidateRegistration.js'
 import '../styles/form.css'
 
+/** The registration form 
+ * @module Components:RegistrationForm
+ * @component
+ * @returns {JSX.Element}
+ */
 export default function RegistrationForm(){
 
     const navigate = useNavigate()

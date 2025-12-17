@@ -1,5 +1,14 @@
 import { useEffect, useState } from "react";
 
+/**
+ * The product cart that is in the product list
+ * @module Components:ProductCard
+ * @component
+ * @param {Object} product - Consulte for more informatons  
+ * @param {function} addToCart - Add an item to cart
+ * @param {boolean} disable - If true, disable the addToCart button
+ * @returns {JSX.Element}
+ */
 export default function ProductCard({ product, addToCart, disable }) {
 
     const imageUrl = product.image;

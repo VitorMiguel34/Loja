@@ -1,30 +1,45 @@
-import {useEffect, useState} from 'react'
+import {useState} from 'react'
 import {useNavigate} from 'react-router-dom'
 import {fetchUsers} from '../service/service.js'
 import '../styles/form.css'
 
-export default function LoginForm({login, setUserData}){
+/**
+ * @typedef LoginFormProps
+ * @property {function} setIsUserLoggedIn - A function that modifie the state of isUserLoggedIn
+ * @property {function} setUserData - A function that modifie the state of userData
+ */
+
+/**
+ * Login form
+ * @module Components:LoginForm
+ * @component
+ * @param {LoginFormProps} props - Props of login's form
+ * @returns {JSX.Element}
+ */
+export default function LoginForm({setIsUserLoggedIn, setUserData}){
     const navigate = useNavigate()
 
     const [userInfos, setUserInfos] = useState({email: '', password: ''})
     const [error, setError] = useState(false)
-    const [sucess, setSucess] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
 
+    /** 
+     * Do the user login
+     * @param {Event} e - The evevent that ocurred
+     * @throws {Error} - If the login fail
+     */
     async function loginUser(e){
         e.preventDefault()
         setError(false)
-        setSucess(false)
         try{
             const users = await fetchUsers()
             const user = users.find(u => u.email === userInfos.email && u.password === userInfos.password)
             
             if(user){
                 localStorage.setItem("userId", user.id)
-                setSucess(true)
-                localStorage.setItem("isUserLogged", true)
+                localStorage.setItem("isUserLoggedIn", true)
                 setUserData(user)
-                login()
+                setIsUserLoggedIn(true)
                 navigate("/usuario/")
             }
             else{
@@ -39,6 +54,10 @@ export default function LoginForm({login, setUserData}){
         }
     }
     
+    /**
+     * Change a input form value
+     * @param {Event} e - The event that ocurred 
+     */
     function handleChange(e){
         setUserInfos({
             ...userInfos,

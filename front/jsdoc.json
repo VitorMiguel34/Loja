@@ -1,0 +1,13 @@
+{
+  "source": {
+    "include": ["./src"],
+    "includePattern": ".+\\.js(doc|x)?$"
+  },
+  "opts": {
+    "encoding": "utf8",
+    "readme": "./README.md", 
+    "destination": "./docs", 
+    "recurse": true,
+    "template": "node_modules/docdash"
+  }
+}
