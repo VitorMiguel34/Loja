@@ -58,12 +58,12 @@ export default class ValidateRegistration{
      * @returns {boolean} - True if the user's name is valid, false otherwise
      */
     static age(userAge){
-        if(userAge < 0){
-            alert("Idade negativa não é válida!")
-            return false
-        }
         if(parseInt(userAge) != userAge){
             alert("A idade deve ser um numero inteiro!")
+            return false
+        }
+        if(userAge < 0){
+            alert("Idade negativa não é válida!")
             return false
         }
         return true

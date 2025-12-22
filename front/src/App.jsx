@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route} from 'react-router-dom';
 import {useEffect, useState} from 'react'
 import AOS from 'aos'
+import Snowfall from 'react-snowfall'
 import PrivateRout from './components/PrivateRoute.jsx';
 import RegistrationPage from './pages/RegistrationPage.jsx';
 import LoginPage from './pages/LoginPage.jsx'
@@ -79,15 +80,16 @@ export default function App() {
 
     return (
         <BrowserRouter>
+            <Snowfall color="#64a1b8"/>
             <Header isUserLoggedIn={isUserLoggedIn}/>
             <main>
                 <Routes>
 
-                    <Route path="/" element={<HomePage/>}/>
-
-                    <Route path="/cadastro" element={<RegistrationPage/>} />
-
-                    <Route path="/login" element={<LoginPage setUserData={setUserData} setIsUserLoggedIn={setIsUserLoggedIn}/>} />
+                    <Route path="/" element={<PrivateRout isUserLoggedIn={!isUserLoggedIn} redirectPage = "/usuario/"/>}>
+                        <Route path="/" element={<HomePage/>}/>
+                        <Route path="/cadastro" element={<RegistrationPage/>} />
+                        <Route path="/login" element={<LoginPage setUserData={setUserData} setIsUserLoggedIn={setIsUserLoggedIn}/>} />
+                    </Route>
 
                     <Route path="/usuario" element={<PrivateRout isUserLoggedIn={isUserLoggedIn}/>}>
                         <Route path="/usuario/" element={<HomePage isUserLoggedIn={isUserLoggedIn} userData={userData} loadingUserContent={loadingUserContent}/>}/>

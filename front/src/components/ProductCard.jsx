@@ -23,7 +23,6 @@ export default function ProductCard({ product, addToCart, disable }) {
 
     return (
         <div className="max-w-xs mx-auto rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 bg-white transform hover:scale-[1.02] my-8">
-
             <div className="h-64 w-full overflow-hidden">
                 <img
                     className="h-full w-full object-cover transition-transform duration-300"
